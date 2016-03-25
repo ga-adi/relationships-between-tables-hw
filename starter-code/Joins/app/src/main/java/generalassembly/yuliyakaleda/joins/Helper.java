@@ -85,5 +85,61 @@ public class Helper extends SQLiteOpenHelper {
     values.put(DataEntryDepartment.COLUMN_EMP_ID, department.getEmpId());
     db.insertOrThrow(DataEntryDepartment.TABLE_NAME, null, values);
   }
+
+  public String getFullInformation() {
+    String result = " ";
+    SQLiteDatabase db = getReadableDatabase();
+    String query = "SELECT NAME, COMPANY, ADDRESS, AGE, SALARY FROM INNER JOIN DEPARTMENT ON COMPANY._ID = DEPARTMENT.EMP_ID";
+    Cursor cursor = db.rawQuery(query, null);
+
+    while(cursor.moveToNext()) {
+      result = cursor.getString(cursor.getColumnIndex(DataEntryCompany.COLUMN_NAME)) + cursor.getString(cursor.getColumnIndex(DataEntryCompany.COLUMN_ADDRESS))
+              + cursor.getString(cursor.getColumnIndex(DataEntryCompany.COLUMN_AGE)) + cursor.getString(cursor.getColumnIndex(DataEntryCompany.COLUMN_SALARY))
+              + cursor.getString(cursor.getColumnIndex(DataEntryDepartment.COLUMN_DEPARTMENT)) + cursor.getString(cursor.getColumnIndex(DataEntryDepartment.COLUMN_EMP_ID));
+      result+= ", ";
+    }
+    return result;
+  }
+
+  public String getNameJoins() {
+    String result = "default name";
+    SQLiteDatabase db = getReadableDatabase();
+    String query = "SELECT NAME FROM COMPANY INNER JOIN DEPARTMENT ON COMPANY._ID = DEPARTMENT.EMP_ID";
+    Cursor cursor = db.rawQuery(query, null);
+
+    while (cursor.moveToNext()) {
+      result = cursor.getString(cursor.getColumnIndex(DataEntryCompany.COLUMN_NAME));
+      result+= ", ";
+    }
+    return result;
+  }
+
+  public String getSalaryJoins() {
+    String result = " ";
+    SQLiteDatabase db = getReadableDatabase();
+    String query = "SELECT SALARY FROM COMPANY INNER JOIN DEPARTMENT ON COMPANY._ID = DEPARTMENT.EMP_ID";
+    Cursor cursor = db.rawQuery(query, null);
+
+    while (cursor.moveToNext()) {
+      result = cursor.getString(cursor.getColumnIndex(DataEntryCompany.COLUMN_NAME));
+      result+= ", ";
+    }
+    return result;
+  }
+
+  public String getDepartmentJoins() {
+    String result = " ";
+    SQLiteDatabase db = getReadableDatabase();
+    String query = "SELECT DEPARTMENT FROM DEPARTMENT INNER JOIN DEPARTMENT ON DEPARTMENT.EMP_ID = COMPANY._ID";
+    Cursor cursor = db.rawQuery(query, null);
+
+    while (cursor.moveToNext()) {
+      result = cursor.getString(cursor.getColumnIndex(DataEntryDepartment.COLUMN_EMP_ID));
+      result+= ", ";
+    }
+
+    return result;
+    
+  }
 }
 
